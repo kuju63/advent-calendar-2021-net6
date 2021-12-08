@@ -1,0 +1,48 @@
+name: testing benchmark
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  collect:
+    strategy:
+      fail-fast: true
+      matrix:
+        runner: ["ubuntu-20.04", "windows-2019", "macos-11"]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup .NET6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: Setup .NET5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "5.0.x"
+      - name: Setup ..NET Core 3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "3.1.x"
+      - name: Setup .NET Core 2.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "2.1.x"
+      - name: Build
+        working-directory: benchmark-io
+        run: |
+          dotnet run -c Release
+      - name: Archive result
+        uses: actions/upload-artifact@v2
+        with:
+          name: benchmark
+          path: |
+            benchmark-io/BenchmarkDotNet.Artifacts
+            !benchmark-io/BenchmarkDotNet.Artifacts/**/*.log
