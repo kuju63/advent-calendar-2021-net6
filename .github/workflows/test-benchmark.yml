@@ -42,7 +42,7 @@ jobs:
       - name: Archive result
         uses: actions/upload-artifact@v2
         with:
-          name: benchmark
+          name: benchmark-${{matrix.runner}}
           path: |
             benchmark-io/BenchmarkDotNet.Artifacts
             !benchmark-io/BenchmarkDotNet.Artifacts/**/*.log
