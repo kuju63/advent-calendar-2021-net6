@@ -6,7 +6,8 @@ namespace Benchmark.IO
     {
         public static void Main()
         {
-            BenchmarkRunner.Run<FileIOTest>();
+            BenchmarkRunner.Run<FileWriteBenchmarks>();
+            BenchmarkRunner.Run<FileReadBenchmarks>();
         }
     }
 }
