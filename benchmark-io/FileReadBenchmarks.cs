@@ -72,7 +72,10 @@ namespace Benchmark.IO
             using (var fs = new FileStream(binaryFilePath, FileMode.Open, FileAccess.Read, FileShare.None, ReadBuffer, FileOptions.Asynchronous))
             using (var buffer = MemoryPool<byte>.Shared.Rent())
             {
-                await fs.ReadAsync(buffer.Memory);
+                while (fs.Length > fs.Position)
+                {
+                    await fs.ReadAsync(buffer.Memory);
+                }
             }
         }
 
